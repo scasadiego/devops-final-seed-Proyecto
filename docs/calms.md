@@ -31,6 +31,8 @@ Existe automatizacion parcial:
 - Pruebas automaticas con Pytest.
 - Auditoria de dependencias con `pip-audit`.
 - Build automatico de imagen Docker.
+- Generacion de artefactos de build.
+- Manifests basicos de Kubernetes.
 
 Pendiente:
 

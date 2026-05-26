@@ -59,5 +59,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create build reports directory
+        run: mkdir -p reports dist
+
       - name: Build Docker image
-        run: docker build -t todo-api:${{ github.sha }} .
+        run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          docker build \
+            -t todo-api:${GITHUB_SHA} \
+            -t todo-api:${SHORT_SHA} \
+            -t todo-api:latest \
+            .
+
+          {
+            echo "image=todo-api"
+            echo "tag_sha=${GITHUB_SHA}"
+            echo "tag_short_sha=${SHORT_SHA}"
+            echo "tag_latest=latest"
+            echo "commit=${GITHUB_SHA}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > reports/docker-build.txt
+
+      - name: Save Docker image artifact
+        run: docker save todo-api:${{ github.sha }} -o dist/todo-api-${{ github.sha }}.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image-${{ github.sha }}
+          path: dist/todo-api-${{ github.sha }}.tar
+
+      - name: Upload build report
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-build-report
+          path: reports/docker-build.txt

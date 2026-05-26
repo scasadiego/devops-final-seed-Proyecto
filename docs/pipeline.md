@@ -54,10 +54,23 @@ El pipeline genera y publica como artefactos:
 
 - `reports/tests.xml`
 - `reports/pip-audit.json`
+- `reports/docker-build.txt`
+- `dist/todo-api-<commit-sha>.tar`
+
+La imagen Docker se construye con tres tags:
+
+- `todo-api:<commit-sha>`
+- `todo-api:<short-sha>`
+- `todo-api:latest`
+
+El archivo `.tar` permite descargar la imagen desde GitHub Actions y cargarla en otro ambiente con:
+
+```bash
+docker load -i todo-api-<commit-sha>.tar
+```
 
 ## Pendiente
 
 - Publicar la imagen Docker en un registry como Docker Hub o GitHub Container Registry.
-- Definir versionamiento semantico de imagen, por ejemplo `v1.0.0`.
 - Agregar reporte de cobertura de pruebas.
 - Agregar despliegue automatico a un ambiente real.
