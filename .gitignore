@@ -8,3 +8,6 @@ node_modules/
 .pytest_cache/
 .ruff_cache/
 .pip-audit-cache/
+# Directorios de salida de pruebas y artefactos
+reports/
+dist/

@@ -7,6 +7,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
 
+# Directorio para la base de datos SQLite
+RUN mkdir -p /data && chmod 777 /data
+
 ENV DB_PATH=/data/tasks.db
 ENV PORT=5000
 
